@@ -1,0 +1,65 @@
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+}
+
+android {
+    namespace = 'com.company.sample.app'
+    compileSdk 36
+
+    defaultConfig {
+        applicationId "com.company.sample.app"
+        minSdk 24
+        targetSdk 36
+        versionCode appVersionCode
+        versionName appVersionName
+    }
+
+    signingConfigs {
+        dev {
+            storeFile file("../keystore/dev.jks")
+            storePassword = 'android'
+            keyAlias = 'devKey'
+            keyPassword = 'android'
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig = signingConfigs.dev
+            debuggable true
+            minifyEnabled false
+            proguardFiles(getDefaultProguardFile('proguard-android.txt'))
+        }
+        release {
+            signingConfig = signingConfigs.dev
+            debuggable false
+            minifyEnabled true
+            shrinkResources = true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions {
+        jvmTarget = '11'
+    }
+    buildFeatures {
+        viewBinding = true
+    }
+    applicationVariants.configureEach { variant ->
+        variant.outputs.each { output ->
+            output.outputFileName = "SampleApp_${versionName}_${variant.name}.apk"
+        }
+    }
+}
+
+dependencies {
+    implementation libs.androidx.core.ktx
+    implementation libs.androidx.appcompat
+    implementation libs.material
+    implementation libs.androidx.activity
+    implementation libs.androidx.constraintlayout
+}
