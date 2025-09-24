@@ -1,0 +1,4 @@
+[submodule "libsample"]
+	path = libsample
+	url = git@github.com:kevin-neilsen/sample-android-library.git
+	branch = develop
